@@ -33,7 +33,7 @@ public class IPAnalyzerAPI {
         
         //Handle the request
         
-        if (rq.handle()){
+        if (rq.handle().isEmpty() || rq.handle().isBlank()){
         //Introduce the output path file
         System.out.println("Introduce the path where the txt file is : ");
         //Get user input
