@@ -37,7 +37,18 @@ public class RequestHandler {
     }
     
     private String parseJSON(JSONObject json){
-        
+        //Hostname of the IP
+        StringBuidler sb = new StringBuilder("Hostname : ");
+        sb.append(json.get("fullip").get("hostname"))
+          .append("\n")
+        //Geographical location of the ip
+          .append("GEO : ").append(json.get("fullip").get("geo"))
+          .append("\n)
+        //Score of the IP
+          .append("Score : ").append(json.get("fullip").get("badip").get("score"))
+          .append("\n")
+        //Blacklists in which the ip is included
+          .append("Blacklists : ").append(json.get("fullip").get("badip").get("blacklists"));
         
     }
     
