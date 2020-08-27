@@ -16,12 +16,13 @@ import java.util.Collection;
  * @author sertv
  */
 public class WriteIPs {
+    private static final String EXTENSION = ".txt";
     private Collection<String> malicious = new ArrayList<String>();
     private String path;
 
     public WriteIPs() {
     }
-    
+
     public void setMalicious(Collection<String> malicious) {
         this.malicious = malicious;
     }
@@ -29,26 +30,45 @@ public class WriteIPs {
     public void setPath(String path) {
         this.path = path;
     }
-    
-    
-    public void write(){
-      try {
-        File myFile = new File(path + "\\malicious.txt");
-        if (myFile.createNewFile()) {
-            //Write all the ips
-            try (FileWriter myWriter = new FileWriter(myFile)) {
-                for (String str : malicious) {
-                    myWriter.write(str+"\n");
+
+    public void write() {
+        boolean done = false;
+        String fileName = "\\malicious";
+        int counter = 0;
+        do {
+            
+            try {
+                //Keep adding number until an available name is found
+                String c = (counter == 0) ? "" : String.valueOf(counter);
+                
+                File myFile = new File(path + fileName + c + EXTENSION);
+                if (myFile.createNewFile()) {
+                    //Write all the ips
+                    try ( FileWriter myWriter = new FileWriter(myFile)) {
+                        for (String str : malicious) {
+                            myWriter.write(str + "\n");
+                        }
+                        //Close the writer
+                        myWriter.close();
+                        done = true;
+                    }
+                } else {
+                    if(counter == 0) System.out.println("File already exists.");
                 }
-                //Close the writer
-                myWriter.close();
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
             }
-        } else {
-            System.out.println("File already exists.");
-        }
-    } catch (IOException e) {
-        System.out.println("An error occurred.");
+        counter++;
+        } while (!done);
     }
-    }
-    
+    /*
+    public static void main(String args[]){
+        WriteIPs wc = new WriteIPs();
+        wc.setPath("C:\\Users\\sertv\\Desktop");
+        Collection<String> lista = new ArrayList<>();
+        lista.add("adddd");
+        lista.add("holaaaa");
+        wc.setMalicious(lista);
+        wc.write();
+    }*/
 }

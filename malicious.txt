@@ -1,0 +1,160 @@
+IP : 151.101.134.49
+Hostname : 
+GEO : ES -> Spain
+Latitude : 0
+Longitude : 0
+Time zone : Europe/Madrid
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 20.186.48.46
+Hostname : 
+GEO : US -> United States
+Latitude : 0
+Longitude : 0
+Time zone : America/New_York
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 40.115.22.134
+Hostname : 
+GEO : NL -> Netherlands
+Latitude : 0
+Longitude : 0
+Time zone : Europe/Amsterdam
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 35.186.224.47
+Hostname : 47.224.186.35.bc.googleusercontent.com
+GEO : US -> United States
+Latitude : 0
+Longitude : 0
+Time zone : America/Chicago
+Score : -1
+Blacklists : ["IPCATV4-DC","BLOCKLISTNET-UA"]
+IP : 45.55.41.223
+Hostname : 
+GEO : US -> United States
+Latitude : 0
+Longitude : 0
+Time zone : America/New_York
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 52.114.88.59
+Hostname : 
+GEO : GB -> United Kingdom
+Latitude : 0
+Longitude : 0
+Time zone : Europe/London
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 151.101.134.248
+Hostname : 
+GEO : ES -> Spain
+Latitude : 0
+Longitude : 0
+Time zone : Europe/Madrid
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 151.101.129.69
+Hostname : 
+GEO : US -> United States
+Latitude : 0
+Longitude : 0
+Time zone : America/Chicago
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 52.114.77.99
+Hostname : 
+GEO : IE -> Ireland
+Latitude : 0
+Longitude : 0
+Time zone : Europe/Dublin
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 52.136.136.11
+Hostname : 
+GEO : FR -> France
+Latitude : 0
+Longitude : 0
+Time zone : Europe/Paris
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 151.101.133.7
+Hostname : 
+GEO : ES -> Spain
+Latitude : 0
+Longitude : 0
+Time zone : Europe/Madrid
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 52.114.7.36
+Hostname : 
+GEO : HK -> Hong Kong
+Latitude : 0
+Longitude : 0
+Time zone : Asia/Hong_Kong
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 35.186.224.53
+Hostname : 53.224.186.35.bc.googleusercontent.com
+GEO : US -> United States
+Latitude : 0
+Longitude : 0
+Time zone : America/Chicago
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 151.101.134.217
+Hostname : 
+GEO : ES -> Spain
+Latitude : 0
+Longitude : 0
+Time zone : Europe/Madrid
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 40.67.254.36
+Hostname : 
+GEO : IE -> Ireland
+Latitude : 0
+Longitude : 0
+Time zone : Europe/Dublin
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 107.21.38.216
+Hostname : ec2-107-21-38-216.compute-1.amazonaws.com
+GEO : US -> United States
+Latitude : 0
+Longitude : 0
+Time zone : America/New_York
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 35.186.224.25
+Hostname : 25.224.186.35.bc.googleusercontent.com
+GEO : US -> United States
+Latitude : 0
+Longitude : 0
+Time zone : America/Chicago
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 151.101.1.69
+Hostname : 
+GEO : US -> United States
+Latitude : 0
+Longitude : 0
+Time zone : America/Chicago
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 40.67.251.132
+Hostname : 
+GEO : IE -> Ireland
+Latitude : 0
+Longitude : 0
+Time zone : Europe/Dublin
+Score : -1
+Blacklists : ["IPCATV4-DC"]
+IP : 40.79.70.158
+Hostname : 
+GEO : US -> United States
+Latitude : 0
+Longitude : 0
+Time zone : America/New_York
+Score : -1
+Blacklists : ["IPCATV4-DC"]

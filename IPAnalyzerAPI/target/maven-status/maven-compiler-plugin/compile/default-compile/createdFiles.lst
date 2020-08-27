@@ -1,4 +1,6 @@
+com\mycompany\ipanalyzerapi\IpValidator.class
 com\mycompany\ipanalyzerapi\ReadCaptures.class
 com\mycompany\ipanalyzerapi\RequestHandler.class
 com\mycompany\ipanalyzerapi\IPAnalyzerAPI.class
+com\mycompany\ipanalyzerapi\JsonString.class
 com\mycompany\ipanalyzerapi\WriteIPs.class

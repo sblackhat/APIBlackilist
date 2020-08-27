@@ -20,20 +20,22 @@ public class IPAnalyzerAPI {
         ReadCaptures rd = new ReadCaptures();
         WriteIPs wc = new WriteIPs();
         
+        do{
         System.out.println("Introduce the path where the txt file is : ");
         
         //Get user input (path) and set it in the reader   
         rd.setPath(sc.nextLine());
         
         //Read the capture
-        rd.readFile();
+        
+        }while(!rd.readFile());
         
         //Set the IPs in the handler
         rq.setIps(rd.getIps());
         
         //Handle the request
         
-        if (rq.handle().isEmpty() || rq.handle().isBlank()){
+        if (rq.handle()){
         //Introduce the output path file
         System.out.println("Introduce the path where the txt file is : ");
         //Get user input

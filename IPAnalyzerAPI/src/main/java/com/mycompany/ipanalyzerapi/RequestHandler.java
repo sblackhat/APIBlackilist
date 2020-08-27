@@ -5,10 +5,11 @@
  */
 package com.mycompany.ipanalyzerapi;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
-import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
@@ -21,9 +22,10 @@ import kong.unirest.json.JSONObject;
  * @author sertv
  */
 public class RequestHandler {
+    private static final String JSONKEY = "fullip";
     private final String charset = "UTF-8";
-    private final String badIP = "https://signals.api.auth0.com/badip/";
-    private final String badFullIP = "https://signals.api.auth0.com/v2.0/ip/";
+    private final static String SIMPLECHECKER = "https://signals.api.auth0.com/badip/";
+    private final static String FULLCHECKER = "https://signals.api.auth0.com/v2.0/ip/";
     private final String apiKey = "b98bc2ef-94a3-4a59-b9bf-669b796d820a";
     private Collection<String> ips = new ArrayList<String>();
     private final Collection<String> malicious = new ArrayList<String>();
@@ -36,29 +38,139 @@ public class RequestHandler {
         return Collections.unmodifiableCollection(malicious);
     }
     
-    private String parseJSON(JSONObject json){
-        //Hostname of the IP
-        StringBuidler sb = new StringBuilder("Hostname : ");
-        sb.append(json.get("fullip").get("hostname"))
+    private String parseJSON(JSONObject input){
+        //Build the JSONObject 
+        JSONObject json = input.getJSONObject("fullip");
+         //Build the String reponse
+        StringBuilder sb = new StringBuilder();
+        
+        //Geo characteristics of the ip
+        JSONObject geo = json.getJSONObject("geo");
+        
+        //Address
+        sb.append("IP : ").append(geo.getString("address"))
+          .append("\n");
+        
+        //Hostname of the ip
+        sb.append("Hostname : ").append(geo.getString("hostname"))
           .append("\n")
         //Geographical location of the ip
-          .append("GEO : ").append(json.get("fullip").get("geo"))
-          .append("\n)
+          .append("GEO : ").append(geo.getString("country"))
+          .append(" -> ").append(geo.getJSONObject("country_names").getString("en"))
+          .append("\n")
+         //Latitude coordinate
+          .append("Latitude : ").append(geo.getString("latitude"))
+          .append("\n")
+         //Longitude coordinate
+          .append("Longitude : ").append(geo.getString("longitude"))
+          .append("\n")
+         //Time zone
+          .append("Time zone : ").append(geo.getString("time_zone"))
+          .append("\n");
+        //IP score characteristics 
+             
+          JSONObject badip = json.getJSONObject("badip");    
+                
         //Score of the IP
-          .append("Score : ").append(json.get("fullip").get("badip").get("score"))
+          sb.append("Score : ").append(badip.getString("score"))
           .append("\n")
         //Blacklists in which the ip is included
-          .append("Blacklists : ").append(json.get("fullip").get("badip").get("blacklists"));
-        
-    }
+          .append("Blacklists : ").append(badip.get("blacklists"));
+          
+    return sb.toString();}
+    
+    private void fullResponse(String ip) throws UnsupportedEncodingException, IOException, InterruptedException{
+            //Builder for the URI
+            StringBuilder sb = new StringBuilder(FULLCHECKER);
+            
+            //Build the query with the parameters
+            sb.append(ip).append("?")
+              .append(String.format("token=%s",
+            URLEncoder.encode(apiKey, charset)));
+            
+            System.out.println("Checking IP : " + ip);
+            System.out.println("....");
+            
+            //Set up the connection
+            HttpClient client = HttpClient.newHttpClient();
+            
+            //Build the request
+            HttpRequest request = HttpRequest.newBuilder()
+                .setHeader("Accept", "application/json")
+                .uri(URI.create(sb.toString()))
+                .build();
+            
+            HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+            
+            //Check the response of the server
+            if(response.statusCode() == 200){
+                try{
+                String result = parseJSON(new JSONObject(response.body())); //Parse the response
+                malicious.add(result);  //Add the parsed response to the list of responses
+                }catch (Exception e ){
+                    System.out.println("Error while parsing " + e.getCause());
+                } 
+            }else{
+                System.out.println("Error while handling the request!");
+            }
+         }
+    
     
     /**
      * Returns true if the Collection contained in the class
      * contains any malicious IP
      * */
-    public String handle() throws Exception{
+    public boolean handle() throws Exception{
         String result  = "";
-        /* Simple badIP Checker
+        //Traverse all the ips in the list
+         for(String ip : ips){
+             
+            StringBuilder URL = new StringBuilder(SIMPLECHECKER);
+            
+            URL.append(ip).append("?")
+              .append(String.format("token=%s",
+            URLEncoder.encode(apiKey, charset)));
+            
+            //Console output
+            System.out.println("Checking IP : " + ip);
+            System.out.println("....");
+            
+            //Create the connection
+            HttpClient client = HttpClient.newHttpClient();
+            //Build the uri for the simple request
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(URL.toString()))
+                .build();
+            //Response
+            HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+            //Check the response of the server
+            if(response.statusCode() == 200){ //200 if malicious
+                System.out.println("IP "+ip+" was found to be malicious");
+                //Go for the full report if the ip is malicious
+                try{
+                fullResponse(ip);
+                }catch (Exception e){
+                    System.out.println("Error while building the full response " + e.getMessage());
+                }
+            }else if(response.statusCode() == 429){ //409 if daily quota exceeded
+                System.out.println("Daily quota exceeded!");
+                break;
+            }else{
+                System.out.println("OK!"); //404 for clean ip
+            }
+            
+        }
+    return !malicious.isEmpty(); }
+    /*
+    public static void main(String args[]) throws Exception{
+        RequestHandler request = new RequestHandler();
+        request.ips.add("95.101.34.19");
+        request.handle();
+    }*/
+    
+    /* Simple badIP Checker
         for(String ip : ips){
             String str = badIP + ip;
             System.out.println("Checking IP : " + ip);
@@ -82,52 +194,4 @@ public class RequestHandler {
                 System.out.println("OK!");
             }
         }*/
-         for(String ip : ips){
-            
-             StringBuilder sb = new StringBuilder(badFullIP);
-            
-            //Build the query with the parameters
-            sb.append(ip).append("?")
-              .append(String.format("token=%s",
-            URLEncoder.encode(apiKey, charset)));
-            
-            System.out.println("Checking IP : " + ip);
-            System.out.println("....");
-            //System.out.println("URL : " + str);
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                //.setHeader("X-Auth-Token", apiKey)
-                .setHeader("Accept", "application/json")
-                .uri(URI.create(sb.toString()))
-                .build();
-            
-            HttpResponse<String> response = client.send(request,
-                HttpResponse.BodyHandlers.ofString());
-            /*
-             //Print the request
-             System.out.println("Request -> " +request.toString());
-              
-             HttpHeaders hd = request.headers();
-             System.out.println(hd.toString());
-             
-             //Print the response
-             System.out.println("Response -> " + response.toString());
-            //Print Status Code
-             System.out.println("Status Code -> " + response.statusCode());
-            */
-            if(response.statusCode() == 200){
-                result = parseJSON(new JSONObject(response.toString()));
-                
-            }else{
-                System.out.println("Error while handling the request!");
-            }
-         }
-        
-    return result; }
-    
-    public static void main(String args[]) throws Exception{
-        RequestHandler request = new RequestHandler();
-        request.ips.add("8.8.8.8");
-        request.handle();
-    }
 }
