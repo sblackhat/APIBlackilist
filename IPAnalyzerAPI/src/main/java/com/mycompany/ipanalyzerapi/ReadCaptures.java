@@ -26,70 +26,64 @@ public class ReadCaptures {
     private String path;
     private final Map<String, String> ips = new HashMap<>();
 
-    boolean checkIfPublicIP(String str) {
+    private boolean checkIfPublicIP(String str) {
         try {
             InetAddress add = InetAddress.getByName(str);
 
-            if (!IpValidator.isValidInet4Address(str) || add.isSiteLocalAddress()
-                    || add.isLoopbackAddress() || add.isMulticastAddress()) {
-                return false;
-            }
-            return true;
+            return !(!IpValidator.isValidInet4Address(str) || add.isSiteLocalAddress()
+                    || add.isLoopbackAddress() || add.isMulticastAddress());
         } catch (Exception ex) {
             System.out.println("Invalid IP " + str + ex.getMessage());
         }
         return false;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    private void parser(String s) {
+        StringTokenizer str = new StringTokenizer(s);
+        while (str.hasMoreElements()) {
+            String ip = str.nextToken().trim().replaceAll("[^.a-zA-Z0-9]", "");
+            if (!ip.isBlank() && checkIfPublicIP(ip) && !ips.containsValue(ip)) {
+                ips.put(ip, ip);
+            }
+        }
     }
 
-    boolean readFile() {
-        File capture;
-        //Check if the path is null
-        if (path.isBlank()) {
-            //Obtain the working directory
-            StringBuilder workingDirectory = new StringBuilder(System.getProperty("user.dir"));
-            capture = new File(workingDirectory.toString());
-        } else {
-            capture = new File(path);
+    private void parseCapture(BufferedReader rd) throws IOException {
+        String s;
+        while ((s = rd.readLine()) != null) {
+            parser(s);
         }
-        try {
+    }
+
+    private void parseCapture(String s) {
+        parser(s);
+    }
+    
+    void readFile(File capture) throws FileNotFoundException, IOException{
+        
             FileReader reader = new FileReader(capture);
             BufferedReader rd = new BufferedReader(reader);
-            String s;
-            while ((s = rd.readLine()) != null) {
-                StringTokenizer str = new StringTokenizer(s);
-                while (str.hasMoreElements()) {
-                    String ip = str.nextToken().trim().replaceAll("[^.a-zA-Z0-9]", "");
-                    if (!ip.isBlank() && checkIfPublicIP(ip) && !ips.containsValue(ip)) {
-                        ips.put(ip, ip);
-                    }
-                }
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found ");
-            return false;
-        } catch (IOException e) {
-            System.out.println("Error while reading the file");
-            return false;
-        }
-    return true;}
+            parseCapture(rd);
+    }
+    
+    void readFile(String str){
+        parseCapture(str);
+    }
 
     public Collection<String> getIps() {
         return Collections.unmodifiableCollection(ips.values());
     }
-
-    /*
-public static void main(String args[]){
-    ReadCaptures rd = new ReadCaptures();
-    System.out.println(System.getProperty("user.dir"));
+/*
+    public static void main(String args[]) {
+        ReadCaptures rd = new ReadCaptures();
+         System.out.println(System.getProperty("user.dir"));
     rd.setPath("C:\\Users\\sertv\\Desktop\\output.txt");
     rd.readFile();
-    //rd.ips.forEach((k, v) -> System.out.println("IP : " + v)); 
-
-    
-}*/
+    rd.ips.forEach((k, v) -> System.out.println("IP : " + v)); 
+         
+        String s = ExecutePowerShell.command();
+        System.out.println("Initial " + s + "\n");
+        rd.parseCapture(s);
+        rd.ips.forEach((k, v) -> System.out.println("IP : " + v));
+    }*/
 }

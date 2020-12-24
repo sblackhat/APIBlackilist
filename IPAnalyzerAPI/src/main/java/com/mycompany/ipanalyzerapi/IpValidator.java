@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author sertv Java program to validate an IPv4 address an IPv4 address
+ * @author sblackhat Java program to validate an IPv4 address an IPv4 address
  */
 public class IpValidator {
 

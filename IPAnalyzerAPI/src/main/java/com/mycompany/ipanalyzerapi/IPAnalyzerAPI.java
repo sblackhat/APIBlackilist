@@ -2,7 +2,7 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
- */
+ 
 package com.mycompany.ipanalyzerapi;
 
 import java.util.Scanner;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  *
  * @author sertv
- */
+ 
 public class IPAnalyzerAPI {
     
     
@@ -37,7 +37,7 @@ public class IPAnalyzerAPI {
         
         if (rq.handle()){
         //Introduce the output path file
-        System.out.println("Introduce the path where the txt file is : ");
+        System.out.println("Introduce the path where you want to store the report : ");
         //Get user input
         wc.setPath(sc.nextLine());
         //Get the collection of malicious IPS
@@ -48,4 +48,4 @@ public class IPAnalyzerAPI {
         
         
     }
-}
+}*/
