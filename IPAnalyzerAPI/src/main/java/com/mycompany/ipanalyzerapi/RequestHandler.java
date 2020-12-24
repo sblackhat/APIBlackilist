@@ -39,8 +39,8 @@ public class RequestHandler {
     }
     
     private void setKeys(){
-        final String key1 = "b98bc2ef-94a3-4a59-b9bf-669b796d820a";
-        final String key2 = "7c1ee8ae-b0c1-4daf-98a5-57531be921c9";
+        final String key1 = "YOUR API keys";
+        final String key2 = "YOUR API keys";
         keys.add(key1);
         keys.add(key2);
     }
